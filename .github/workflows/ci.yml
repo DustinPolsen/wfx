@@ -1,0 +1,46 @@
+name: Continuous Integration
+
+on:
+  # Run this workflow on pull requests and pushes to the develop branch.
+  pull_request:
+    branches:
+      - develop
+      - feature/*
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15 # Adjust as needed based on your project size
+
+    steps:
+      # 1. Check out the repository.
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js environment.
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Choose the Node version that matches your project
+
+      # 3. Cache node_modules to speed up installs.
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+
+      # 4. Install project dependencies.
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # 5. Run linting for code quality.
+      - name: Run ESLint
+        run: yarn lint
+
+      # 6. Run type checking (if using TypeScript).
+      - name: Run TypeScript check
+        run: yarn tsc --noEmit
