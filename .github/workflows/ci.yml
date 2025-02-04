@@ -1,22 +1,20 @@
-name: Continuous Integration
+name: Build Android APK
 
 on:
-  # Run this workflow on pull requests and pushes to the develop branch.
+  push:
+    branches:
+      - develop # Adjust as needed
   pull_request:
     branches:
       - develop
-      - feature/*
-  push:
-    branches:
-      - main
 
 jobs:
-  ci:
+  build-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 15 # Adjust as needed based on your project size
+    timeout-minutes: 20
 
     steps:
-      # 1. Check out the repository.
+      # 1. Checkout the repository code.
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -24,23 +22,55 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Choose the Node version that matches your project
+          node-version: '20'
 
-      # 3. Cache node_modules to speed up installs.
-      - name: Cache node_modules
+      # 3. Cache npm dependencies based on package-lock.json.
+      - name: Cache npm modules
         uses: actions/cache@v3
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
 
-      # 4. Install project dependencies.
+      # 4. Install project dependencies using npm.
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
-      # 5. Run linting for code quality.
-      - name: Run ESLint
-        run: yarn lint
+      # 5. Set up JDK 8 (required for Android builds).
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
-      # 6. Run type checking (if using TypeScript).
-      - name: Run TypeScript check
-        run: yarn tsc --noEmit
+      # 6. Cache Gradle wrapper files.
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
+
+      # 7. Cache Gradle dependencies.
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+
+      # 8. Ensure gradlew is executable.
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      # 9. Build the release APK.
+      - name: Build APK
+        run: |
+          cd android
+          ./gradlew assembleRelease --no-daemon
+
+      # 10. Upload the generated APK as an artifact.
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
