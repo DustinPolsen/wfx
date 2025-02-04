@@ -3,10 +3,10 @@ name: Build Android APK
 on:
   push:
     branches:
-      - develop # Adjust as needed
+      - main # Adjust as needed
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   build-apk:
