@@ -1,5 +1,4 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
 import SplashScreen from './src/screens/splash';
 import SignInScreen from './src/screens/signin';
 import SignUpScreen from './src/screens/signup';
@@ -32,7 +31,5 @@ const App = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default App;

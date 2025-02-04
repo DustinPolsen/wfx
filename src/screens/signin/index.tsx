@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
+import {Text, View, Image, StatusBar} from 'react-native';
 import RoubdButtonComp from '../../components/RoubdButtonComp';
 import FullRoundButton from '../../components/FullRoundButton';
 import {SignInGoogle} from '../../config/firebase/GoogleSignIn';

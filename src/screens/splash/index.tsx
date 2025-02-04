@@ -1,4 +1,4 @@
-import {Text, View, ImageBackground} from 'react-native';
+import {Text, ImageBackground} from 'react-native';
 import React from 'react';
 
 export default function SplashScreen({navigation}: any) {
