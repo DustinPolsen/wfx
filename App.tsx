@@ -1,12 +1,38 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+import SplashScreen from './src/screens/splash';
+import SignInScreen from './src/screens/signin';
+import SignUpScreen from './src/screens/signup';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+const stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Hello, React Native!</Text>
-    </View>
+    <>
+      <NavigationContainer>
+        <stack.Navigator>
+          <stack.Screen
+            name="Splash"
+            component={SplashScreen}
+            options={{headerShown: false}}
+          />
+          <stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{headerShown: false}}
+          />
+          <stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{headerShown: false}}
+          />
+        </stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
+
+const styles = StyleSheet.create({});
 
 export default App;

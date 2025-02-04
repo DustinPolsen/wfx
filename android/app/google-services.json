@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019570737312",
+    "project_id": "wfx-project",
+    "storage_bucket": "wfx-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019570737312:android:dd86c69809de332953b9c5",
+        "android_client_info": {
+          "package_name": "com.wfx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqIff1KN7AwKwHd_mLa51Bh-E10KV9sX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
