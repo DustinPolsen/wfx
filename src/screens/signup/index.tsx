@@ -44,7 +44,6 @@ export default function SignUpScreen({navigation}: any) {
                 onChangeText={setUsername}
                 style={styles.input}
               />
-
               <Text style={styles.label}>Enter your password</Text>
               <TextInput
                 placeholder="Enter your Password"
